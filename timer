@@ -1,16 +1,35 @@
 // ==UserScript==
-// @name         Пуп лид таймер
-// @version      2.9
-// @description  Показывает время в Боливии, Перу, Эквадоре, Колумбии, Гватемале, Коста-Рике и Аргентине
+// @name         UnicoTimer
+// @version      3.1.1
+// @description  Показывает время работы банков латама.
 // @author       Ебейший 77
 // @match        *://web.chat2desk.com/*
 // @match        *://web.chat2desk.by/*
-// @grant        none
+// @grant        GM_xmlhttpRequest
 // @license      MIT
 // @namespace    https://greasyfork.org/users/1338837
-// @downloadURL  https://raw.githubusercontent.com/PoopSoftWare/ptimer/main/timer.user.js
-// @updateURL    https://raw.githubusercontent.com/PoopSoftWare/ptimer/main/timer.user.js
+// @downloadURL https://update.greasyfork.org/scripts/502073/%D0%9F%D1%83%D0%BF%20%D0%BB%D0%B8%D0%B4%20%D1%82%D0%B0%D0%B9%D0%BC%D0%B5%D1%80.user.js
+// @updateURL https://update.greasyfork.org/scripts/502073/%D0%9F%D1%83%D0%BF%20%D0%BB%D0%B8%D0%B4%20%D1%82%D0%B0%D0%B9%D0%BC%D0%B5%D1%80.meta.js
 // ==/UserScript==
+
+const GITHUB_VERSION_URL = 'https://raw.githubusercontent.com/PoopSoftWare/UnicoTimer/main/version';
+const GITHUB_SCRIPT_URL = 'https://update.greasyfork.org/scripts/502073/%D0%9F%D1%83%D0%BF%20%D0%BB%D0%B8%D0%B4%20%D1%82%D0%B0%D0%B9%D0%BC%D0%B5%D1%80.user.js';
+const CURRENT_VERSION = '3.1.1';
+
+function checkForUpdates() {
+    GM_xmlhttpRequest({
+        method: 'GET',
+        url: GITHUB_VERSION_URL,
+        onload: function(response) {
+            const latestVersion = response.responseText.trim();
+            if (latestVersion > CURRENT_VERSION) {
+                if (confirm(`Доступна новая версия UnicoTimer (${latestVersion}). Обновить сейчас?`)) {
+                    window.location.href = GITHUB_SCRIPT_URL;
+                }
+            }
+        }
+    });
+}
 
 const script = document.createElement('script');
 script.src = 'https://cdnjs.cloudflare.com/ajax/libs/luxon/2.3.0/luxon.min.js';
@@ -212,4 +231,5 @@ script.onload = function() {
     }
 
     createButton();
+    checkForUpdates();
 };
