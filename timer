@@ -12,7 +12,7 @@
 // @updateURL https://update.greasyfork.org/scripts/502743/UnicoTimer.user.js
 // ==/UserScript==
 
-const GITHUB_VERSION_URL = 'https://raw.githubusercontent.com/PoopSoftWare/UnicoTimer/main/version';
+const GITHUB_VERSION_URL = 'https://raw.githubusercontent.com/PoopSoftWare/UnicoTimer/main/ver';
 const GITHUB_SCRIPT_URL = 'https://update.greasyfork.org/scripts/502743/UnicoTimer.user.js;
 const CURRENT_VERSION = '3.1.1';
 
