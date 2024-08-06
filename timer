@@ -8,12 +8,12 @@
 // @grant        GM_xmlhttpRequest
 // @license      MIT
 // @namespace    https://greasyfork.org/users/1338837
-// @downloadURL https://update.greasyfork.org/scripts/502073/%D0%9F%D1%83%D0%BF%20%D0%BB%D0%B8%D0%B4%20%D1%82%D0%B0%D0%B9%D0%BC%D0%B5%D1%80.user.js
-// @updateURL https://update.greasyfork.org/scripts/502073/%D0%9F%D1%83%D0%BF%20%D0%BB%D0%B8%D0%B4%20%D1%82%D0%B0%D0%B9%D0%BC%D0%B5%D1%80.meta.js
+// @downloadURL https://update.greasyfork.org/scripts/502743/UnicoNotion.user.js
+// @updateURL https://update.greasyfork.org/scripts/502743/UnicoNotion.user.js
 // ==/UserScript==
 
 const GITHUB_VERSION_URL = 'https://raw.githubusercontent.com/PoopSoftWare/UnicoTimer/main/version';
-const GITHUB_SCRIPT_URL = 'https://update.greasyfork.org/scripts/502073/%D0%9F%D1%83%D0%BF%20%D0%BB%D0%B8%D0%B4%20%D1%82%D0%B0%D0%B9%D0%BC%D0%B5%D1%80.user.js';
+const GITHUB_SCRIPT_URL = 'https://update.greasyfork.org/scripts/502743/UnicoNotion.user.js';
 const CURRENT_VERSION = '3.1.1';
 
 function checkForUpdates() {
