@@ -1,18 +1,22 @@
 // ==UserScript==
 // @name         UnicoTimer
-// @version      3.1.1
-// @description  Показывает время работы банков латама.
+// @version      3.2.0
+// @description  Показывает время работы банков латама с возможностью настройки.
 // @author       Ебейший 77
 // @match        *://web.chat2desk.com/*
 // @match        *://web.chat2desk.by/*
 // @grant        GM_xmlhttpRequest
+// @grant        GM_setValue
+// @grant        GM_getValue
 // @license      MIT
 // @namespace    https://greasyfork.org/users/1338837
+// @downloadURL https://update.greasyfork.org/scripts/502743/UnicoTimer.user.js
+// @updateURL https://update.greasyfork.org/scripts/502743/UnicoTimer.meta.js
 // ==/UserScript==
 
 const GITHUB_VERSION_URL = 'https://raw.githubusercontent.com/PoopSoftWare/ptimer/main/ver';
 const GITHUB_SCRIPT_URL = 'https://update.greasyfork.org/scripts/502743/UnicoNotion.user.js';
-const CURRENT_VERSION = '3.1.1';
+const CURRENT_VERSION = '3.2.0';
 
 function checkForUpdates() {
     GM_xmlhttpRequest({
@@ -35,6 +39,42 @@ document.head.appendChild(script);
 
 script.onload = function() {
     const { DateTime } = luxon;
+
+    const countries = {
+        'Боливия': 'America/La_Paz',
+        'Перу': 'America/Lima',
+        'Эквадор': 'America/Guayaquil',
+        'Колумбия': 'America/Bogota',
+        'Гватемала': 'America/Guatemala',
+        'Коста-Рика': 'America/Costa_Rica',
+        'Аргентина': 'America/Argentina/Buenos_Aires',
+        'Чили': 'America/Santiago',
+        'Парагвай': 'America/Asuncion',
+        'Уругвай': 'America/Montevideo',
+        'Бразилия': 'America/Sao_Paulo',
+        'Мексика': 'America/Mexico_City',
+        'Венесуэла': 'America/Caracas',
+        'Гондурас': 'America/Tegucigalpa',
+        'Никарагуа': 'America/Managua'
+    };
+
+    const bankHours = {
+        'Боливия': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 12 },
+        'Перу': { open: 9, close: 17, saturdayOpen: 9, saturdayClose: 13 },
+        'Эквадор': { open: 9, close: 17, saturdayOpen: 9, saturdayClose: 13 },
+        'Колумбия': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 13 },
+        'Гватемала': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 12 },
+        'Коста-Рика': { open: 8, close: 16, saturdayOpen: 9, saturdayClose: 12 },
+        'Аргентина': { open: 10, close: 15, saturdayOpen: 10, saturdayClose: 13 },
+        'Чили': { open: 9, close: 14, saturdayOpen: 9, saturdayClose: 12 },
+        'Парагвай': { open: 8, close: 15, saturdayOpen: 8, saturdayClose: 12 },
+        'Уругвай': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 13 },
+        'Бразилия': { open: 10, close: 16, saturdayOpen: 10, saturdayClose: 14 },
+        'Мексика': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 13 },
+        'Венесуэла': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 13 },
+        'Гондурас': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 13 },
+        'Никарагуа': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 13 }
+    };
 
     function createButton() {
         const button = document.createElement('button');
@@ -131,47 +171,74 @@ script.onload = function() {
     }
 
     function setupClock(container) {
-        var countries = {
-            'Боливия': 'America/La_Paz',
-            'Перу': 'America/Lima',
-            'Эквадор': 'America/Guayaquil',
-            'Колумбия': 'America/Bogota',
-            'Гватемала': 'America/Guatemala',
-            'Коста-Рика': 'America/Costa_Rica',
-            'Аргентина': 'America/Argentina/Buenos_Aires'
-        };
+        let selectedCountries = GM_getValue('selectedCountries', Object.keys(countries));
 
-        var bankHours = {
-            'Боливия': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 12 },
-            'Перу': { open: 9, close: 17, saturdayOpen: 9, saturdayClose: 13 },
-            'Эквадор': { open: 9, close: 17, saturdayOpen: 9, saturdayClose: 13 },
-            'Колумбия': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 13 },
-            'Гватемала': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 12 },
-            'Коста-Рика': { open: 8, close: 16, saturdayOpen: 9, saturdayClose: 12 },
-            'Аргентина': { open: 10, close: 15, saturdayOpen: 10, saturdayClose: 13 }
-        };
-
-        for (var country in countries) {
-            var clock = document.createElement('div');
+        function createCountryElement(country) {
+            const clock = document.createElement('div');
             clock.style.marginBottom = '10px';
-            var countryDiv = document.createElement('div');
+            clock.style.display = 'flex';
+            clock.style.alignItems = 'center';
+            clock.style.justifyContent = 'space-between';
+
+            const countryDiv = document.createElement('div');
             countryDiv.textContent = country;
             countryDiv.style.fontSize = '1.2em';
-            countryDiv.style.marginBottom = '10px';
             clock.appendChild(countryDiv);
-            var timeDiv = document.createElement('div');
-            timeDiv.style.fontSize = '2em';
+
+            const timeDiv = document.createElement('div');
+            timeDiv.style.fontSize = '1.5em';
             timeDiv.style.fontWeight = 'bold';
             clock.appendChild(timeDiv);
-            container.appendChild(clock);
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = '✖';
+            removeButton.style.marginLeft = '10px';
+            removeButton.style.cursor = 'pointer';
+            removeButton.addEventListener('click', () => {
+                clock.remove();
+                selectedCountries = selectedCountries.filter(c => c !== country);
+                GM_setValue('selectedCountries', selectedCountries);
+            });
+            clock.appendChild(removeButton);
+
             clock.timeDiv = timeDiv;
             clock.timeZone = countries[country];
             clock.bankHours = bankHours[country];
+
+            return clock;
         }
 
+        function addCountry(country) {
+            if (!selectedCountries.includes(country)) {
+                selectedCountries.push(country);
+                container.insertBefore(createCountryElement(country), addCountryButton);
+                GM_setValue('selectedCountries', selectedCountries);
+            }
+        }
+
+        selectedCountries.forEach(country => {
+            container.appendChild(createCountryElement(country));
+        });
+
+        const addCountryButton = document.createElement('button');
+        addCountryButton.textContent = 'Добавить страну';
+        addCountryButton.style.marginTop = '10px';
+        addCountryButton.addEventListener('click', () => {
+            const availableCountries = Object.keys(countries).filter(c => !selectedCountries.includes(c));
+            if (availableCountries.length === 0) {
+                alert('Все страны уже добавлены');
+                return;
+            }
+            const country = prompt('Выберите страну для добавления:\n' + availableCountries.join(', '));
+            if (country && countries[country]) {
+                addCountry(country);
+            }
+        });
+        container.appendChild(addCountryButton);
+
         function isBankOpen(now, hours) {
-            var day = now.weekday;
-            var hour = now.hour;
+            const day = now.weekday;
+            const hour = now.hour;
 
             if (day >= 1 && day <= 5) {
                 return hour >= hours.open && hour < hours.close;
@@ -183,18 +250,13 @@ script.onload = function() {
         }
 
         function updateTime() {
-            for (var i = 0; i < container.children.length; i++) {
-                var clock = container.children[i];
+            Array.from(container.children).forEach(clock => {
                 if (clock.timeDiv) {
-                    var now = DateTime.now().setZone(clock.timeZone);
+                    const now = DateTime.now().setZone(clock.timeZone);
                     clock.timeDiv.textContent = now.toLocaleString(DateTime.TIME_WITH_SECONDS);
-                    if (isBankOpen(now, clock.bankHours)) {
-                        clock.timeDiv.style.color = 'green';
-                    } else {
-                        clock.timeDiv.style.color = 'red';
-                    }
+                    clock.timeDiv.style.color = isBankOpen(now, clock.bankHours) ? 'green' : 'red';
                 }
-            }
+            });
         }
 
         setInterval(updateTime, 1000);
@@ -202,8 +264,10 @@ script.onload = function() {
 
         if (container.id === 'time-widget-container') {
             container.onmousedown = function(event) {
-                var shiftX = event.clientX - container.getBoundingClientRect().left;
-                var shiftY = event.clientY - container.getBoundingClientRect().top;
+                if (event.target.tagName.toLowerCase() === 'button') return;
+
+                const shiftX = event.clientX - container.getBoundingClientRect().left;
+                const shiftY = event.clientY - container.getBoundingClientRect().top;
 
                 function moveAt(pageX, pageY) {
                     container.style.left = pageX - shiftX + 'px';
