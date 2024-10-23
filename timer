@@ -3,7 +3,7 @@
 // @version      3.2.1
 // @description  Показывает время работы банков латама с возможностью настройки.
 // @author       Ебейший 77
-// @match        *://web.chat2desk.com/*
+// @match        *://web-unico.chat2desk.com/*
 // @match        *://web.chat2desk.by/*
 // @grant        GM_xmlhttpRequest
 // @grant        GM_setValue
