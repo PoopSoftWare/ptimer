@@ -55,7 +55,8 @@ script.onload = function() {
         'Мексика': 'America/Mexico_City',
         'Венесуэла': 'America/Caracas',
         'Гондурас': 'America/Tegucigalpa',
-        'Никарагуа': 'America/Managua'
+        'Никарагуа': 'America/Managua',
+        'Сальвадор': 'America/El_Salvador'
     };
 
     const bankHours = {
@@ -73,7 +74,8 @@ script.onload = function() {
         'Мексика': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 13 },
         'Венесуэла': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 13 },
         'Гондурас': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 13 },
-        'Никарагуа': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 13 }
+        'Никарагуа': { open: 9, close: 16, saturdayOpen: 9, saturdayClose: 13 },
+        'Сальвадор': { open: 8, close: 16, saturdayOpen: 8, saturdayClose: 12 }
     };
 
     function createButton() {
