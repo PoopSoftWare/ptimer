@@ -11,7 +11,7 @@
 // @license      MIT
 // @namespace    https://greasyfork.org/users/1338837
 // @downloadURL https://update.greasyfork.org/scripts/502743/UnicoTimer.user.js
-// @updateURL https://update.greasyfork.org/scripts/502743/UnicoTimer.meta.js
+// @updateURL https://update.greasyfork.org/scripts/502743/UnicoTimer.user.js
 // ==/UserScript==
 
 const GITHUB_VERSION_URL = 'https://raw.githubusercontent.com/PoopSoftWare/ptimer/main/ver';
