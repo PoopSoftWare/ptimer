@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         UnicoTimer
-// @version      3.2.0
+// @version      3.2.1
 // @description  Показывает время работы банков латама с возможностью настройки.
 // @author       Ебейший 77
 // @match        *://web.chat2desk.com/*
@@ -16,7 +16,7 @@
 
 const GITHUB_VERSION_URL = 'https://raw.githubusercontent.com/PoopSoftWare/ptimer/main/ver';
 const GITHUB_SCRIPT_URL = 'https://update.greasyfork.org/scripts/502743/UnicoNotion.user.js';
-const CURRENT_VERSION = '3.2.0';
+const CURRENT_VERSION = '3.2.1';
 
 function checkForUpdates() {
     GM_xmlhttpRequest({
